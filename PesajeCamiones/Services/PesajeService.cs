@@ -14,6 +14,12 @@ namespace PesajeCamiones.Services
         public async Task<bool> Insert(Pesaje pesaje) {
             try
             {
+                Camion? camion = await dbContext.Camiones.FindAsync(pesaje.PlacaCamion);
+                if (camion == null)
+                {
+                    camion = new Camion { Placa = pesaje.PlacaCamion, Marca = "defaultValue", NumeroEjes = 0 };
+                    dbContext.Camiones.Add(camion);
+                }
                 dbContext.Pesajes.Add(pesaje);
                 await dbContext.SaveChangesAsync();
                 return true;
