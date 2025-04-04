@@ -12,5 +12,5 @@ public partial class FotoPesaje
 
     public int IdPesaje { get; set; }
     [JsonIgnore]
-    public virtual Pesaje IdPesajeNavigation { get; set; } = null!;
+    public virtual Pesaje? IdPesajeNavigation { get; set; }
 }

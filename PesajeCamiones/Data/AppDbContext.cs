@@ -72,7 +72,7 @@ public partial class AppDbContext : DbContext
 
             entity.HasOne(d => d.PlacaCamionNavigation).WithMany(p => p.Pesajes)
                 .HasForeignKey(d => d.PlacaCamion)
-                .OnDelete(DeleteBehavior.SetNull)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Pesaje_Camion");
         });
 

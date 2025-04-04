@@ -18,5 +18,5 @@ public partial class Pesaje
     [JsonIgnore]
     public virtual ICollection<FotoPesaje> FotoPesajes { get; set; } = new List<FotoPesaje>();
     [JsonIgnore]
-    public virtual Camion PlacaCamionNavigation { get; set; } = null!;
+    public virtual Camion? PlacaCamionNavigation { get; set; }
 }
