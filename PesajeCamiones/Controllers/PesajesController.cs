@@ -4,7 +4,7 @@ using PesajeCamiones.Services;
 
 namespace PesajeCamiones.Controllers
 {
-    [Route("api/Pesajes")]
+    [Route("api/[Controller]")]
     [ApiController]
     public class PesajesController : ControllerBase
     {
