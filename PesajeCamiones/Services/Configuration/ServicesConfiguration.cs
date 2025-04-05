@@ -6,6 +6,7 @@
             services.AddScoped<IPesajeService, PesajeService>();
             services.AddScoped<IReportesPesaje, PesajeService>();
             services.AddScoped<IFotosPesajeService, FotosPesajeService>();
+            services.AddScoped<ICamionService, CamionService>();
         }
     }
 }

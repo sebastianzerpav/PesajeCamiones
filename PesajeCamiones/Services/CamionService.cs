@@ -23,8 +23,8 @@ namespace PesajeCamiones.Services
             catch (Exception ex) { Console.WriteLine(ex.Message); return false; }
         }
 
-        public async Task<bool> Update(int id, Camion camion) {
-            Camion? camionFounded = await context.Camiones.FindAsync(id);
+        public async Task<bool> Update(String placa, Camion camion) {
+            Camion? camionFounded = await context.Camiones.FindAsync(placa);
             if (camionFounded == null) { return false;  } else
             {
                 context.Entry(camionFounded).CurrentValues.SetValues(camion);
@@ -33,8 +33,8 @@ namespace PesajeCamiones.Services
             }
         }
 
-        public async Task<bool> Delete(int id) {
-            Camion? camionFounded = await context.Camiones.FindAsync(id);
+        public async Task<bool> Delete(String placa) {
+            Camion? camionFounded = await context.Camiones.FindAsync(placa);
             if (camionFounded == null) { return false; } else {
                 context.Camiones.Remove(camionFounded);
                 await context.SaveChangesAsync();
@@ -52,9 +52,9 @@ namespace PesajeCamiones.Services
             }
         }
 
-        public async Task<Camion?> ConsultarCamion(int id) {
+        public async Task<Camion?> ConsultarCamion(String placa) {
             try {
-                Camion? camion = await context.Camiones.FindAsync(id);
+                Camion? camion = await context.Camiones.FindAsync(placa);
                 return camion;
             }catch (Exception ex) { Console.WriteLine(ex.Message);
                 return null;
@@ -65,9 +65,9 @@ namespace PesajeCamiones.Services
     public interface ICamionService
     {
         Task<bool> Insert(Camion camion);
-        Task<bool> Update(int id, Camion camion);
-        Task<bool> Delete(int id);
+        Task<bool> Update(String placa, Camion camion);
+        Task<bool> Delete(String placa);
         Task<List<Camion>> ListaCamiones();
-        Task<Camion?> ConsultarCamion(int id);
+        Task<Camion?> ConsultarCamion(String placa);
     }
 }
