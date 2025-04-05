@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <Folder Include="Data\Models\" />
+    <Folder Include="Data\Ficheros\" />
   </ItemGroup>
 
 </Project>
