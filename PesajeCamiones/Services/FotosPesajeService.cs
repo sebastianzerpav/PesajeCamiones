@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Mvc;
 using PesajeCamiones.Data;
 using PesajeCamiones.Data.Models;
 
@@ -13,6 +14,16 @@ namespace PesajeCamiones.Services
         {
             this.webHostEnvironment = webHostEnvironment;
             this.context = context;
+        }
+
+        public Stream? Download(String nombreArchivo)
+        {
+            string folderRoot = Path.Combine(webHostEnvironment.ContentRootPath, "Data", "Ficheros");
+            string fileRoot = Path.Combine(folderRoot, nombreArchivo);
+            if (!File.Exists(fileRoot)) { return null; } else {
+                FileStream file = new FileStream(fileRoot, FileMode.Open, FileAccess.Read);
+                return file;
+            }
         }
 
         public bool Upload(int idPesaje, IFormFile fichero) {
@@ -80,6 +91,7 @@ namespace PesajeCamiones.Services
     public interface IFotosPesajeService
     {
         public bool Upload(int idPesaje, IFormFile fichero);
+        public Stream? Download(String nombreArchivo);
         public bool Update(int idFichero, IFormFile fichero);
         public bool Delete(int idFichero);
     }

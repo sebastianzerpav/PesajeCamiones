@@ -21,6 +21,13 @@ namespace PesajeCamiones.Controllers
             if (respuesta) { return Ok("Fichero insertado con éxito"); } else { return BadRequest("No se envió un archivo"); }
         }
 
+        [HttpGet("DescargarFicheros/{nombreArchivo}")]
+        public IActionResult Download([FromRoute] String nombreArchivo) { 
+            Stream? file = fotosPesajeService.Download(nombreArchivo);
+            if (file != null) { return File(file, "application/octet-stream", nombreArchivo); } else { return NotFound("No fue posible descargar el archivo"); }
+        }
+
+
         [HttpPut("ActualizarFicheros/{idFichero}")]
         [Consumes("multipart/form-data")]
         public IActionResult Update([FromRoute] int idFichero, [FromForm] FotoDto fotoDto) {
