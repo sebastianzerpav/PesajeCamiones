@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using PesajeCamiones.Data.DTOs;
 using PesajeCamiones.Data.Models;
 using PesajeCamiones.Services;
 
@@ -9,8 +11,10 @@ namespace PesajeCamiones.Controllers
     public class PesajesController : ControllerBase
     {
         private readonly IPesajeService pesajeService;
-        public PesajesController(IPesajeService pesajeService) {
+        private readonly IReportesPesaje reportesPesaje;
+        public PesajesController(IPesajeService pesajeService, IReportesPesaje reportesPesaje) {
             this.pesajeService = pesajeService;
+            this.reportesPesaje = reportesPesaje;
         }
 
         [HttpPost("Insertar")]
@@ -47,6 +51,15 @@ namespace PesajeCamiones.Controllers
                 return Ok("Pesaje eliminado correctamente");
             }
             else { return NotFound("No se encontró el pesaje que busca eliminar. Si está seguro de que existe el pesaje, verificar errores de app."); }
+        }
+
+        [Route("PesajePorPlaca/{placa}")]
+        [HttpGet]
+        public async Task<IActionResult> ListaPesajesPorPlaca([FromRoute]String placa) {
+            List<PesajePorPlacaReporte> pesajes = await reportesPesaje.PesajePorPlaca(placa);
+            if (!pesajes.Any()) { return NotFound("No se encontró ningún pesaje para la placa"); } else {
+                return Ok(pesajes);
+            }
         }
     }
 }

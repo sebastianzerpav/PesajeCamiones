@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PesajeCamiones.Data;
+using PesajeCamiones.Data.DTOs;
 using PesajeCamiones.Data.Models;
 
 namespace PesajeCamiones.Services
 {
-    public class PesajeService : IPesajeService
+    public class PesajeService : IPesajeService, IReportesPesaje
     {
         public readonly AppDbContext dbContext;
         public PesajeService(AppDbContext dbContext) { 
@@ -70,6 +71,19 @@ namespace PesajeCamiones.Services
             Pesaje? pesaje = await dbContext.Pesajes.FindAsync(id);
             return pesaje;
         }
+
+        public async Task<List<PesajePorPlacaReporte>> PesajePorPlaca(String placa) {
+            List<PesajePorPlacaReporte> pesajes = await dbContext.Pesajes.Where(p => p.PlacaCamion == placa).Join(
+                dbContext.Camiones, p => p.PlacaCamion, c => c.Placa, (p, c) => new PesajePorPlacaReporte {
+                    Placa = c.Placa,
+                    Marca = c.Marca,
+                    NumeroEjes = c.NumeroEjes,
+                    Peso = p.Peso,
+                    Estacion = p.Estacion,
+                    FechaPesaje = p.FechaPesaje
+                }).ToListAsync();
+            return pesajes;
+        }
     }
 
     public interface IPesajeService {
@@ -78,4 +92,9 @@ namespace PesajeCamiones.Services
         public Task<bool> Delete(int id);
         public Task<Pesaje?> Search(int id);
     }
+
+    public interface IReportesPesaje {
+        public Task<List<PesajePorPlacaReporte>> PesajePorPlaca(String placa);
+    }
+
 }
